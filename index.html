@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SMD</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <h2>Ấn vào đây nè!</h2>
+    <p>👇</p>
+    <div id="app">
+      <div class="envelope" :class="{ open: isOpen }" @click="toggleOpen">
+        <div class="message">💌</div>
+        <div class="right_triangle-left"></div>
+        <div class="right_triangle-right"></div>
+        <div class="trapezium"></div>
+        <div class="flap"></div>
+      </div>
+    </div>
+
+    <script>
+      new Vue({
+        el: "#app",
+        data: { isOpen: false },
+        methods: {
+          toggleOpen() {
+            this.isOpen = !this.isOpen;
+            if (this.isOpen) {
+              setTimeout(() => {
+                window.location.href = `box.html`; // Hoặc địa chỉ URL của trang index
+              }, 1000); // Trì hoãn 1 giây (1000ms)
+            }
+          },
+        },
+      });
+    </script>
+  </body>
+</html>

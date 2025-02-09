@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chat UI</title>
+    <script
+      src="https://kit.fontawesome.com/a076d05399.js"
+      crossorigin="anonymous"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.5/font/bootstrap-icons.min.css" />
+
+    <style>
+      body {
+        background-color: #c4c4c4;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+      }
+      .box {
+        width: 400px;
+        height: 500px;
+        background-color: white;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px,
+          rgba(0, 0, 0, 0.22) 0px 10px 10px;
+        border-radius: 10px;
+        border-left: 2px solid #dedede;
+        border-right: 2px solid #dedede;
+        overflow: hidden;
+      }
+      .head {
+        height: 80px;
+        background-color: #dedede;
+        color: white;
+        text-align: center;
+        display: flex;
+        align-items: center;
+        padding: 10px;
+        border-radius: 10px 10px 0 0;
+      }
+      .avt {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background-color: #bbb;
+        margin-right: 10px;
+      }
+      .name {
+        font-size: 18px;
+        font-weight: bold;
+        color: black;
+      }
+      .info {
+        display: flex;
+        flex-direction: column; /* Sắp xếp name và status theo chiều dọc */
+      }
+      .status {
+        font-size: 14px;
+        color: #28a745; /* Màu xanh lá để hiển thị trạng thái online */
+        font-weight: normal;
+        margin-top: 3px;
+      }
+
+      .bot {
+        height: 65px;
+        background-color: #dedede;
+        display: flex;
+        align-items: center;
+        padding: 10px;
+        border-radius: 0 0 10px 10px;
+        gap: 10px;
+      }
+
+      .input-container {
+        display: flex;
+        align-items: center;
+        flex: 1;
+        background: white;
+        border-radius: 20px;
+        padding: 8px 12px;
+        border: 1px solid #ccc;
+      }
+
+      .input-container input {
+        flex: 1;
+        border: none;
+        outline: none;
+        font-size: 16px;
+        padding: 5px;
+      }
+
+      .bot i {
+        font-size: 22px; /* Tăng kích thước icon */
+        color: #666;
+        cursor: pointer;
+        transition: 0.3s;
+      }
+
+      .bot i:hover {
+        color: #0099cc;
+      }
+
+      .icons {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .chat-container {
+        flex: 1;
+        padding: 10px;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column-reverse;
+        scrollbar-width: thin;
+        scrollbar-color: #999 #f0f0f0;
+      }
+
+      /* Thanh cuộn */
+      .chat-container::-webkit-scrollbar {
+        width: 8px;
+      }
+
+      .chat-container::-webkit-scrollbar-thumb {
+        background: #999;
+        border-radius: 10px;
+      }
+
+      .chat-container::-webkit-scrollbar-track {
+        background: #f0f0f0;
+      }
+
+      /* Tin nhắn */
+      .message {
+        max-width: 70%;
+        padding: 10px;
+        margin: 8px 0;
+        font-size: 16px;
+        border-radius: 10px;
+      }
+
+      .message.left {
+        background-color: #e0e0e0;
+        align-self: flex-start;
+        border-radius: 10px 10px 10px 0;
+      }
+
+      /* Hiệu ứng typing */
+      .typing-indicator {
+        display: flex;
+        gap: 4px;
+        align-items: center;
+        margin: 8px 0;
+      }
+
+      .typing-indicator span {
+        width: 8px;
+        height: 8px;
+        background: #999;
+        border-radius: 50%;
+        animation: typing 1.5s infinite ease-in-out;
+      }
+
+      .typing-indicator span:nth-child(2) {
+        animation-delay: 0.2s;
+      }
+
+      .typing-indicator span:nth-child(3) {
+        animation-delay: 0.4s;
+      }
+
+      @keyframes typing {
+        0%,
+        100% {
+          opacity: 0.3;
+          transform: translateY(0);
+        }
+        50% {
+          opacity: 1;
+          transform: translateY(-3px);
+        }
+      }
+      @media (max-width: 768px) {
+        .box {
+          width: 90%;
+          height: 80vh;
+        }
+
+        .message {
+          font-size: 14px;
+          padding: 8px;
+        }
+
+        .input-container input {
+          font-size: 14px;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .box {
+          width: 95%;
+          height: 85vh;
+        }
+
+        .head {
+          height: 70px;
+          padding: 8px;
+        }
+
+        .avt {
+          width: 40px;
+          height: 40px;
+        }
+
+        .name {
+          font-size: 16px;
+        }
+
+        .status {
+          font-size: 12px;
+        }
+
+        .message {
+          font-size: 13px;
+          padding: 6px;
+        }
+
+        .bot {
+          height: 60px;
+          padding: 8px;
+        }
+
+        .input-container {
+          padding: 6px 10px;
+        }
+
+        .input-container input {
+          font-size: 12px;
+        }
+      }
+      .timestamp {
+        font-size: 12px;
+        color: #666;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="box">
+      <!-- Header có Avatar và Tên -->
+      <div class="head">
+        <div class="avt"></div>
+        <div class="info">
+          <div class="name">Some one</div>
+          <div class="status">Đang hoạt động</div>
+        </div>
+      </div>
+
+      <!-- Vùng chứa tin nhắn -->
+      <div class="chat-container" id="chat-container">
+        <!-- Chưa có tin nhắn ban đầu -->
+      </div>
+
+      <!-- Phần Chat -->
+      <div class="bot">
+        <i class="bi bi-plus"></i>
+        <i class="bi bi-camera"></i>
+        <i class="bi bi-emoji-smile"></i>
+
+        <div class="input-container">
+          <input type="text" placeholder="Nhập tin nhắn..." />
+          <i class="bi bi-mic"></i>
+        </div>
+        <div class="icons">
+          <i class="fas fa-paper-plane"></i>
+        </div>
+      </div>
+    </div>
+  </body>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const chatContainer = document.getElementById("chat-container");
+
+      const messages = [
+        "Xin chào động lực của em!",
+        "Em làm cái này thay cho lời em muốn nói",
+        "Thời gian qua có lẽ tính cách của em không ít lần làm chị thấy khó chịu",
+        "Nhưng nay, thật lòng và cũng không còn trẻ con như thời gian trước nữa",
+        "Em thích chị cũng được một thời gian rồi",
+        "Thấy chị vẫn chưa có người bên cạnh, không biết rằng chị có đang chờ ai không nếu không em muốn là đưa chị về, hay là em có thể làm máy rửa bát của chị sau này, lấy chị là dộng lực để cố gắng",
+        "Nếu như chị đồng ý, hãy cho em một cơ hội tìm hiểu chị",
+        "Nếu không thì cũng không sao em chỉ âm thầm thích chị, cho đến khi chị tìm được nửa kia của mình",
+      ];
+
+      let index = 0;
+
+      function getCurrentTime() {
+        const now = new Date();
+        const hours = String(now.getHours()).padStart(2, "0");
+        const minutes = String(now.getMinutes()).padStart(2, "0");
+        return `${hours}:${minutes}`;
+      }
+
+      function addTypingIndicator() {
+        const typingDiv = document.createElement("div");
+        typingDiv.classList.add("typing-indicator");
+        typingDiv.innerHTML = "<span></span><span></span><span></span>";
+        chatContainer.prepend(typingDiv);
+        return typingDiv;
+      }
+
+      function addMessage(text) {
+        const messageDiv = document.createElement("div");
+        messageDiv.classList.add("message", "left");
+        messageDiv.textContent = text;
+
+        const timestamp = document.createElement("div");
+        timestamp.classList.add("timestamp");
+        timestamp.textContent = getCurrentTime();
+        messageDiv.appendChild(timestamp);
+
+        chatContainer.prepend(messageDiv);
+        chatContainer.scrollTop = chatContainer.scrollHeight;
+      }
+
+      function simulateTyping() {
+        if (index < messages.length) {
+          const typingIndicator = addTypingIndicator();
+          const typingTime = messages[index].length * 50;
+
+          setTimeout(() => {
+            typingIndicator.remove();
+            addMessage(messages[index]);
+            index++;
+            simulateTyping();
+          }, typingTime);
+        }
+      }
+
+      setTimeout(simulateTyping, 1000);
+    });
+  </script>
+</html>
